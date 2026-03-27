@@ -41,22 +41,25 @@ void loop() {
 
   bool closeState = digitalRead(closeButton);
   bool openState  = digitalRead(openButton);
+  int MainValue = analogRead(fsrMain);
 
   // Toggle-functie voor sluit-knop
   // Alleen reageren wanneer de knop van HIGH → LOW gaat
+if (MainValue < pressureThreshold) {          // alleen reageren als sensorwaarde onder threshold
   if (closeState == LOW && lastCloseButtonState == HIGH) {
-    gripperClosing = !gripperClosing;  // Wissel tussen starten/stoppen
-    delay(200); // Debounce om dubbele triggers te voorkomen
+      gripperClosing = !gripperClosing;   // wissel tussen starten/stoppen
+      delay(200); // debounce
   }
-  lastCloseButtonState = closeState;
+}
+lastCloseButtonState = closeState;
 
-
-  int MainValue = analogRead(fsrMain);
 
   bool MainPressed = MainValue >= pressureThreshold;
 
   // Debug-informatie naar Serial Monitor
 
+  Serial.print("Sensor: ");
+  Serial.print(MainValue);
   Serial.print(" | Sluiten actief: ");
   Serial.println(gripperClosing ? "JA" : "NEE");
 
@@ -83,9 +86,10 @@ void loop() {
 
   if (gripperClosing) {
 
-    // Veiligheidsstop: beide sensoren moeten druk voelen
+    // Veiligheidsstop: sensor moet druk voelen
     if (MainPressed) {
       Serial.println("Object vast! Motor stopt.");
+      gripperClosing = false;   // grijper blijft uitgeschakelt
       return; // Motor stopt automatisch
     }
 
