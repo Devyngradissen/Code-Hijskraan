@@ -9,7 +9,8 @@ const int closeButton = 4; // Sluit-knop (toggle: 1x drukken = starten/stoppen)
 const int openButton  = 5; // Open-knop (momentary: werkt zolang je indrukt)
 
 // FSR druksensoren
-const int fsrMain = 34;   // Druksensor
+const int fsrLeft  = A0;   // Linker druksensor
+const int fsrRight = A1;   // Rechter druksensor
 
 // INSTELLINGEN
 
@@ -51,12 +52,17 @@ void loop() {
   lastCloseButtonState = closeState;
 
 
-  int MainValue = analogRead(fsrMain);
+  int leftValue  = analogRead(fsrLeft);
+  int rightValue = analogRead(fsrRight);
 
-  bool MainPressed = MainValue >= pressureThreshold;
+  bool leftPressed  = leftValue  >= pressureThreshold;
+  bool rightPressed = rightValue >= pressureThreshold;
 
   // Debug-informatie naar Serial Monitor
-
+  Serial.print("Links: ");
+  Serial.print(leftValue);
+  Serial.print(" | Rechts: ");
+  Serial.print(rightValue);
   Serial.print(" | Sluiten actief: ");
   Serial.println(gripperClosing ? "JA" : "NEE");
 
@@ -84,7 +90,7 @@ void loop() {
   if (gripperClosing) {
 
     // Veiligheidsstop: beide sensoren moeten druk voelen
-    if (MainPressed) {
+    if (leftPressed && rightPressed) {
       Serial.println("Object vast! Motor stopt.");
       return; // Motor stopt automatisch
     }
