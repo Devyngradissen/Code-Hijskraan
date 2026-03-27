@@ -1,19 +1,19 @@
-//Later doen: STEP, Knoppen en DIR pinnen aanpassen - kalibreren van sensoren/aanpassen
+//Later doen: STEP, Knoppen en DIR pinnen aanpassen GEDAAN - kalibreren van sensoren/aanpassen VERRANDERD NAAR 2000 VOR MIDDEN PUNT WAARDE
 
 // PIN-INSTELLINGEN
 
-const int stepPin = 2;     // STEP-signaal naar driver (stuurt stappen)
-const int dirPin  = 3;     // DIR-signaal naar driver (bepaalt richting)
+const int stepPin = 25;     // STEP-signaal naar driver (stuurt stappen)
+const int dirPin  = 26;     // DIR-signaal naar driver (bepaalt richting)
 
-const int closeButton = 4; // Sluit-knop (toggle: 1x drukken = starten/stoppen)
-const int openButton  = 5; // Open-knop (momentary: werkt zolang je indrukt)
+const int closeButton = 32; // Sluit-knop (toggle: 1x drukken = starten/stoppen)
+const int openButton  = 33; // Open-knop (momentary: werkt zolang je indrukt)
 
 // FSR druksensoren
 const int fsrMain = 34;   // Druksensor
 
 // INSTELLINGEN
 
-int pressureThreshold = 200;   // Drempelwaarde voor druk (moet je kalibreren)
+int pressureThreshold = 2000;   // Drempelwaarde voor druk (moet je kalibreren)
 int stepDelay = 800;           // Snelheid van de stappenmotor (microseconden)
 
 // Variabelen voor de sluit-knop (toggle)
